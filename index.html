@@ -37,7 +37,33 @@
         .subtext {
             font-size: 1.2rem;
             color: #7ecbff;
-            opacity: 0,9;
+            opacity: 0.9;
+        }
+
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 20px; 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #7ecbff;
+            box-shadow: 0 0 10px rgba(126, 203, 255, 0.6);
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            white-space: nowrap;
         }
 
         @media (max-width: 600px) {
@@ -53,6 +79,10 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <img src="profile.jpg" alt="Profilbild" class="profile-pic">
+        <div class="profile-name">Luis Maximilian</div>
+    </div>
     <div class="container">
         <div class ="headline">
             This website is right now being built by <span>Luis</span>
