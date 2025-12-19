@@ -1,95 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="websiteicon.png" type="image/png">
-    <title>LX's Workbench</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #2e2e2e;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="websiteicon.png" type="image/png" />
+  <title>LX's Workbench</title>
 
-        .container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-        
-        }
-        .headline {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #7ecbff;
-            margin-bottom: 1rem;
-        }
-        
-        .headline span {
-            color: #ffffff;
-        }
+  <style>
+    :root{
+      --bg: #2e2e2e;
+      --accent: #7ecbff;
+      --accentSoft: rgba(126,203,255,0.16);
+      --glass: rgba(46,46,46,0.55);
+      --text: #ffffff;
+      --muted: #9fdcff;
+    }
 
-        .subtext {
-            font-size: 1.2rem;
-            color: #7ecbff;
-            opacity: 0.9;
-        }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(126,203,255,0.18), transparent 60%),
+        radial-gradient(900px 520px at 85% 15%, rgba(126,203,255,0.10), transparent 60%),
+        var(--bg);
+    }
 
-        .header {
-            position: fixed;
-            top: 20px;
-            left: 20px; 
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10;
-        }
+    /* ===== Header ===== */
+    .header {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      right: 18px;
 
-        .profile-pic {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #7ecbff;
-            box-shadow: 0 0 10px rgba(126, 203, 255, 0.6);
-        }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-        .profile-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffffff;
-            white-space: nowrap;
-        }
+      padding: 10px 14px;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
 
-        @media (max-width: 600px) {
-            .headline {
-                font-size: 2.2rem;
-            }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
 
-            .subtext {
-                font-size: 1rem;
-            }
-        }
-        
-    </style>
+    .profile-pic {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(126, 203, 255, 0.45);
+      flex: 0 0 auto;
+    }
+
+    .profile-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* ===== Modern Nav (Pill Tabs) ===== */
+    .nav-wrap{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(126,203,255,0.16);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.16);
+      width: 100%;
+      justify-content: center;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: rgba(174,226,255,0.95);
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: transform .15s ease, background .2s ease, opacity .2s ease, box-shadow .2s ease;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      background: rgba(126,203,255,0.10);
+      box-shadow: 0 0 0 1px rgba(126,203,255,0.18) inset;
+    }
+
+    .nav a.active {
+      color: #0b1b24;
+      background: linear-gradient(180deg, rgba(126,203,255,0.95), rgba(126,203,255,0.75));
+      box-shadow: 0 10px 25px rgba(126,203,255,0.18);
+      opacity: 1;
+    }
+
+    /* ===== Mobile Menu ===== */
+    .menu-wrap { position: relative; }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid rgba(126,203,255,0.28);
+      background: rgba(255,255,255,0.04);
+      color: rgba(174,226,255,0.95);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 54px;
+      right: 0;
+      background: rgba(46,46,46,0.92);
+      border: 1px solid rgba(126,203,255,0.22);
+      border-radius: 14px;
+      padding: 8px;
+      min-width: 190px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: rgba(174,226,255,0.95);
+      font-weight: 800;
+      text-decoration: none;
+      opacity: 0.95;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(126,203,255,0.12);
+      opacity: 1;
+    }
+
+    /* ===== Hero ===== */
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding: 220px 20px 0;
+      box-sizing: border-box;
+    }
+
+    .headline {
+      font-size: 4.0rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+
+    .headline span {
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(126, 203, 255, 0.45);
+    }
+
+    .subtext {
+      font-size: 1.35rem;
+      color: var(--muted);
+      opacity: 0.95;
+      max-width: 780px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      .nav-wrap { display: none; }
+      .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+      .profile-name { font-size: 1.05rem; }
+      .profile-pic { width: 44px; height: 44px; }
+      .container { padding-top: 170px; }
+      .headline { font-size: 2.4rem; }
+      .subtext { font-size: 1.05rem; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="header">
-        <img src="profile.jpg" alt="Profilbild" class="profile-pic">
-        <div class="profile-name">Luis Maximilian</div>
+  <div class="header">
+    <div class="header-left">
+      <img src="profile.jpg" alt="Profilbild" class="profile-pic" />
+      <div class="profile-name">Luis Maximilian</div>
     </div>
-    <div class="container">
-        <div class ="headline">
-            This website is right now being built by <span>Luis</span>
-            </div>
-            <div class="subtext">
-                Thanks for your patience.
-            </div>
+
+    <div class="nav-wrap">
+      <nav class="nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="tools.html">Useful Tools</a>
+        <a href="games.html">Games</a>
+      </nav>
+    </div>
+
+    <div class="menu-wrap">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="tools.html">Useful Tools</a>
+        <a href="games.html">Games</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="headline">
+      This website is right now being built by <span>Luis</span>
+    </div>
+    <div class="subtext">
+      Thanks for your patience.
+    </div>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = mobileMenu.style.display === "block";
+      mobileMenu.style.display = open ? "none" : "block";
+    });
+
+    document.addEventListener("click", () => {
+      mobileMenu.style.display = "none";
+    });
+  </script>
 </body>
 </html>
