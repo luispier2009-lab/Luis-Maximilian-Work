@@ -5,14 +5,924 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="websiteicon.png" type="image/png" />
   <title>Useful Tools – LX's Workbench</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root{
+      --bg: #2e2e2e;
+      --accent: #7ecbff;
+      --accentSoft: rgba(126,203,255,0.16);
+      --glass: rgba(46,46,46,0.55);
+      --text: #ffffff;
+      --muted: #9fdcff;
+      --danger: #ff6b6b;
+      --ok: #7dffb2;
+      --warn: #ffd36b;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 15% 10%, rgba(126,203,255,0.18), transparent 60%),
+        radial-gradient(900px 520px at 85% 15%, rgba(126,203,255,0.10), transparent 60%),
+        var(--bg);
+    }
+
+    /* ===== Header (same style as index) ===== */
+    .header {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 10px 14px;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .profile-pic {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 12px rgba(126, 203, 255, 0.45);
+      flex: 0 0 auto;
+    }
+
+    .profile-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* ===== Nav ===== */
+    .nav-wrap{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(126,203,255,0.16);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.16);
+      width: 100%;
+      justify-content: center;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: rgba(174,226,255,0.95);
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: transform .15s ease, background .2s ease, opacity .2s ease, box-shadow .2s ease;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      background: rgba(126,203,255,0.10);
+      box-shadow: 0 0 0 1px rgba(126,203,255,0.18) inset;
+    }
+
+    .nav a.active {
+      color: #0b1b24;
+      background: linear-gradient(180deg, rgba(126,203,255,0.95), rgba(126,203,255,0.75));
+      box-shadow: 0 10px 25px rgba(126,203,255,0.18);
+      opacity: 1;
+    }
+
+    /* ===== Mobile Menu ===== */
+    .menu-wrap { position: relative; }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid rgba(126,203,255,0.28);
+      background: rgba(255,255,255,0.04);
+      color: rgba(174,226,255,0.95);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 54px;
+      right: 0;
+      background: rgba(46,46,46,0.92);
+      border: 1px solid rgba(126,203,255,0.22);
+      border-radius: 14px;
+      padding: 8px;
+      min-width: 190px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: rgba(174,226,255,0.95);
+      font-weight: 800;
+      text-decoration: none;
+      opacity: 0.95;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(126,203,255,0.12);
+      opacity: 1;
+    }
+
+    /* ===== Page Layout ===== */
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 220px 20px 60px;
+      box-sizing: border-box;
+    }
+
+    .page-title{
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 0 0 10px;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+
+    .page-sub{
+      color: var(--muted);
+      opacity: 0.95;
+      text-align: center;
+      max-width: 820px;
+      margin: 0 0 22px;
+      font-size: 1.15rem;
+    }
+
+    .grid{
+      width: 100%;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .card{
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.30);
+      padding: 16px;
+      position: relative;
+    }
+
+    .card h2{
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+      color: rgba(174,226,255,0.98);
+      letter-spacing: -0.2px;
+    }
+
+    .muted{
+      color: var(--muted);
+      opacity: 0.95;
+      margin: 0 0 14px;
+      line-height: 1.4;
+    }
+
+    .row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .input{
+      flex: 1 1 220px;
+      min-width: 220px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.22);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      outline: none;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: box-shadow .2s ease, transform .12s ease, border-color .2s ease;
+      box-sizing: border-box;
+    }
+
+    .input:focus{
+      border-color: rgba(126,203,255,0.5);
+      box-shadow: 0 0 0 4px rgba(126,203,255,0.12);
+    }
+
+    .btn{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.28);
+      background: rgba(255,255,255,0.04);
+      color: rgba(174,226,255,0.98);
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .12s ease, background .2s ease, box-shadow .2s ease, opacity .2s ease;
+      user-select: none;
+    }
+
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(126,203,255,0.10);
+      box-shadow: 0 0 0 1px rgba(126,203,255,0.18) inset;
+    }
+
+    .btn.primary{
+      color: #0b1b24;
+      background: linear-gradient(180deg, rgba(126,203,255,0.95), rgba(126,203,255,0.75));
+      box-shadow: 0 10px 25px rgba(126,203,255,0.18);
+      border-color: rgba(126,203,255,0.40);
+    }
+
+    .btn.danger{
+      border-color: rgba(255,107,107,0.35);
+      color: rgba(255,220,220,0.98);
+    }
+
+    .result{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.18);
+      background: rgba(255,255,255,0.03);
+      color: rgba(174,226,255,0.95);
+      font-weight: 900;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .result .text{
+      word-break: break-word;
+    }
+
+    .pill{
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(126,203,255,0.18);
+      background: rgba(255,255,255,0.03);
+      color: rgba(174,226,255,0.90);
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+
+    .note{
+      margin-top: 10px;
+      color: rgba(174,226,255,0.75);
+      font-weight: 800;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /* ===== REAL rounded dropdowns (custom select) ===== */
+    .cselect{
+      position: relative;
+      flex: 1 1 220px;
+      min-width: 220px;
+    }
+
+    .cselect-btn{
+      width: 100%;
+      padding: 12px 44px 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.22);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      outline: none;
+      text-align: left;
+      box-sizing: border-box;
+      transition: box-shadow .2s ease, border-color .2s ease, background .2s ease, transform .12s ease;
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    .cselect-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(126,203,255,0.45);
+      background: linear-gradient(180deg, rgba(126,203,255,0.10), rgba(255,255,255,0.02));
+      box-shadow: 0 0 0 1px rgba(126,203,255,0.12) inset;
+    }
+
+    .cselect-btn:focus{
+      border-color: rgba(126,203,255,0.55);
+      box-shadow: 0 0 0 4px rgba(126,203,255,0.12);
+    }
+
+    .cselect-btn::after{
+      content: "";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translateY(-50%);
+      background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%237ecbff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>")
+        no-repeat center / contain;
+      opacity: 0.95;
+      pointer-events: none;
+      transition: transform .18s ease;
+    }
+
+    .cselect.open .cselect-btn::after{
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .cselect-menu{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      background: rgba(46,46,46,0.95);
+      border: 1px solid rgba(126,203,255,0.25);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.40);
+      overflow: hidden;
+      display: none;
+      z-index: 200;
+      backdrop-filter: blur(12px);
+    }
+
+    .cselect.open .cselect-menu{
+      display: block;
+    }
+
+    .cselect-item{
+      padding: 12px 14px;
+      color: rgba(174,226,255,0.96);
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .cselect-item:hover{
+      background: rgba(126,203,255,0.14);
+      color: rgba(255,255,255,0.98);
+    }
+
+    .cselect-item.active{
+      background: rgba(126,203,255,0.22);
+      color: #ffffff;
+    }
+
+    .cselect-item + .cselect-item{
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ===== Word Counter ===== */
+    .textarea{
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.22);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      outline: none;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      box-sizing: border-box;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .textarea:focus{
+      border-color: rgba(126,203,255,0.55);
+      box-shadow: 0 0 0 4px rgba(126,203,255,0.12);
+    }
+
+    .counter-grid{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .counter-box{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(126,203,255,0.18);
+      background: rgba(255,255,255,0.03);
+      font-weight: 900;
+      color: rgba(174,226,255,0.95);
+    }
+
+    .counter-box .label{
+      display: block;
+      font-size: 0.9rem;
+      opacity: 0.85;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .counter-box .val{
+      font-size: 1.35rem;
+      color: var(--accent);
+      letter-spacing: -0.2px;
+    }
+
+    @media (max-width: 820px){
+      .counter-grid{ grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .nav-wrap { display: none; }
+      .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+      .profile-name { font-size: 1.05rem; }
+      .profile-pic { width: 44px; height: 44px; }
+      .container { padding-top: 170px; }
+      .page-title { font-size: 2.35rem; }
+      .page-sub { font-size: 1.05rem; }
+      .input, .cselect { min-width: 160px; }
+      .cselect-btn { font-size: 16px; }
+    }
+  </style>
 </head>
+
 <body>
-  <div style="padding:220px 20px 0; text-align:center; font-family: Arial, Helvetica, sans-serif; color:rgb(12, 11, 11);">
-    <h1 style="color:#7ecbff;">Useful Tools</h1>
-    <p style="color:#9fdcff;">Coming soon.</p>
-    <p><a href="index.html" style="color:#7ecbff; font-weight:bold; text-decoration:none;">Back to Home</a></p>
+  <div class="header">
+    <div class="header-left">
+      <img src="profile.jpg" alt="Profile picture" class="profile-pic" />
+      <div class="profile-name">Luis Maximilian</div>
+    </div>
+
+    <div class="nav-wrap">
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="tools.html" class="active">Useful Tools</a>
+        <a href="games.html">Games</a>
+      </nav>
+    </div>
+
+    <div class="menu-wrap">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="tools.html">Useful Tools</a>
+        <a href="games.html">Games</a>
+      </div>
+    </div>
   </div>
-  <body style="background:#2e2e2e;"></body>
+
+  <div class="container">
+    <h1 class="page-title">Useful Tools</h1>
+    <p class="page-sub">A small collection of handy tools you can use directly in your browser.</p>
+
+    <div class="grid">
+
+      <!-- ===== Unit Converter ===== -->
+      <div class="card">
+        <h2>Unit Converter</h2>
+        <p class="muted">Pick a category, enter a value, choose units — done.</p>
+
+        <div class="row">
+          <div class="cselect" id="categorySelect" data-value="length">
+            <button class="cselect-btn" type="button">Length</button>
+            <div class="cselect-menu" role="listbox">
+              <div class="cselect-item active" data-value="length">Length</div>
+              <div class="cselect-item" data-value="weight">Weight</div>
+              <div class="cselect-item" data-value="temp">Temperature</div>
+            </div>
+          </div>
+
+          <input class="input" id="value" type="number" inputmode="decimal" placeholder="Enter a value" />
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <div class="cselect" id="fromSelect" data-value="cm">
+            <button class="cselect-btn" type="button">Centimeters (cm)</button>
+            <div class="cselect-menu" role="listbox"></div>
+          </div>
+
+          <span class="pill">→</span>
+
+          <div class="cselect" id="toSelect" data-value="m">
+            <button class="cselect-btn" type="button">Meters (m)</button>
+            <div class="cselect-menu" role="listbox"></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px;">
+          <button class="btn primary" id="convertBtn">Convert</button>
+          <button class="btn" id="swapBtn" title="Swap units">Swap</button>
+          <button class="btn danger" id="resetBtn" title="Reset everything">Reset</button>
+        </div>
+
+        <div class="result" id="resultBox" style="display:none;">
+          <div class="text" id="resultText">—</div>
+          <button class="btn" id="copyBtn" title="Copy result to clipboard">Copy</button>
+        </div>
+
+        <div class="note" id="noteLine">
+          Tip: Press <b>Enter</b> to convert. Press <b>Esc</b> to close menus.
+        </div>
+      </div>
+
+      <!-- ===== Word Counter ===== -->
+      <div class="card">
+        <h2>Word Counter</h2>
+        <p class="muted">Paste or type text and get instant stats.</p>
+
+        <textarea class="textarea" id="wcText" placeholder="Type or paste text here..."></textarea>
+
+        <div class="row" style="margin-top:12px;">
+          <button class="btn" id="wcClearBtn" title="Clear text">Clear</button>
+          <button class="btn" id="wcCopyBtn" title="Copy text">Copy text</button>
+        </div>
+
+        <div class="counter-grid">
+          <div class="counter-box"><span class="label">Words</span><span class="val" id="wcWords">0</span></div>
+          <div class="counter-box"><span class="label">Characters</span><span class="val" id="wcChars">0</span></div>
+          <div class="counter-box"><span class="label">Characters (no spaces)</span><span class="val" id="wcCharsNoSpaces">0</span></div>
+          <div class="counter-box"><span class="label">Lines</span><span class="val" id="wcLines">0</span></div>
+
+          <div class="counter-box"><span class="label">Sentences</span><span class="val" id="wcSentences">0</span></div>
+          <div class="counter-box"><span class="label">Paragraphs</span><span class="val" id="wcParagraphs">0</span></div>
+          <div class="counter-box"><span class="label">Reading time</span><span class="val" id="wcReadTime">0m</span></div>
+          <div class="counter-box"><span class="label">Speaking time</span><span class="val" id="wcSpeakTime">0m</span></div>
+        </div>
+
+        <div class="note">Tip: Works offline, nothing is uploaded.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ===== Mobile menu =====
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = mobileMenu.style.display === "block";
+      mobileMenu.style.display = open ? "none" : "block";
+    });
+
+    document.addEventListener("click", () => {
+      mobileMenu.style.display = "none";
+      closeAllSelects();
+    });
+
+    // ===== Unit Converter =====
+    const valueEl = document.getElementById("value");
+    const convertBtn = document.getElementById("convertBtn");
+    const swapBtn = document.getElementById("swapBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const resultBox = document.getElementById("resultBox");
+    const resultText = document.getElementById("resultText");
+    const copyBtn = document.getElementById("copyBtn");
+
+    const categorySelect = document.getElementById("categorySelect");
+    const fromSelect = document.getElementById("fromSelect");
+    const toSelect = document.getElementById("toSelect");
+
+    const UNITS = {
+      length: [
+        { id: "mm", label: "Millimeters (mm)", toBase: v => v / 1000 },
+        { id: "cm", label: "Centimeters (cm)", toBase: v => v / 100 },
+        { id: "m",  label: "Meters (m)",      toBase: v => v },
+        { id: "km", label: "Kilometers (km)", toBase: v => v * 1000 }
+      ],
+      weight: [
+        { id: "g",  label: "Grams (g)",       toBase: v => v / 1000 },
+        { id: "kg", label: "Kilograms (kg)",  toBase: v => v }
+      ],
+      temp: [
+        { id: "c", label: "Celsius (°C)", toBase: v => v, fromBase: v => v },
+        { id: "f", label: "Fahrenheit (°F)", toBase: v => (v - 32) * 5/9, fromBase: v => (v * 9/5) + 32 }
+      ]
+    };
+
+    function formatNumber(n){
+      const s = n.toFixed(8);
+      return s.replace(/\.?0+$/, "");
+    }
+
+    function showResult(text){
+      resultText.textContent = text;
+      resultBox.style.display = "flex";
+    }
+
+    function hideResult(){
+      resultBox.style.display = "none";
+      resultText.textContent = "—";
+    }
+
+    function closeAllSelects(){
+      document.querySelectorAll(".cselect.open").forEach(s => s.classList.remove("open"));
+    }
+
+    function setCSelectValue(selectEl, value, label){
+      selectEl.dataset.value = value;
+      selectEl.querySelector(".cselect-btn").textContent = label;
+      const items = selectEl.querySelectorAll(".cselect-item");
+      items.forEach(i => i.classList.toggle("active", i.dataset.value === value));
+    }
+
+    function buildCSelectMenu(selectEl, items, defaultValue){
+      const menu = selectEl.querySelector(".cselect-menu");
+      menu.innerHTML = "";
+      items.forEach((u) => {
+        const div = document.createElement("div");
+        div.className = "cselect-item";
+        div.dataset.value = u.id;
+        div.textContent = u.label;
+        if (u.id === defaultValue) div.classList.add("active");
+        div.addEventListener("click", (e) => {
+          e.stopPropagation();
+          setCSelectValue(selectEl, u.id, u.label);
+          selectEl.classList.remove("open");
+          hideResult();
+        });
+        menu.appendChild(div);
+      });
+
+      const def = items.find(x => x.id === defaultValue) || items[0];
+      setCSelectValue(selectEl, def.id, def.label);
+    }
+
+    function initCSelect(selectEl){
+      const btn = selectEl.querySelector(".cselect-btn");
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const wasOpen = selectEl.classList.contains("open");
+        closeAllSelects();
+        selectEl.classList.toggle("open", !wasOpen);
+      });
+    }
+
+    function initCategorySelect(){
+      initCSelect(categorySelect);
+
+      categorySelect.querySelectorAll(".cselect-item").forEach(item => {
+        item.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const value = item.dataset.value;
+          const label = item.textContent;
+          setCSelectValue(categorySelect, value, label);
+          categorySelect.classList.remove("open");
+          updateUnits();
+          hideResult();
+        });
+      });
+    }
+
+    function getCategory(){
+      return categorySelect.dataset.value;
+    }
+
+    function getUnit(category, id){
+      return UNITS[category].find(u => u.id === id);
+    }
+
+    function updateUnits(){
+      const cat = getCategory();
+      const list = UNITS[cat];
+
+      let defFrom = list[0].id;
+      let defTo = list[Math.min(1, list.length - 1)].id;
+
+      if (cat === "length"){ defFrom = "cm"; defTo = "m"; }
+      if (cat === "weight"){ defFrom = "g";  defTo = "kg"; }
+      if (cat === "temp"){   defFrom = "c";  defTo = "f"; }
+
+      buildCSelectMenu(fromSelect, list, defFrom);
+      buildCSelectMenu(toSelect, list, defTo);
+    }
+
+    function convert(){
+      const cat = getCategory();
+      const raw = String(valueEl.value).trim();
+      const val = Number(raw);
+
+      if (!raw || !Number.isFinite(val)){
+        showResult("Please enter a valid number.");
+        return;
+      }
+
+      const fromId = fromSelect.dataset.value;
+      const toId = toSelect.dataset.value;
+
+      const from = getUnit(cat, fromId);
+      const to = getUnit(cat, toId);
+
+      if (!from || !to){
+        showResult("Please select units.");
+        return;
+      }
+
+      let result;
+
+      if (cat === "temp"){
+        const base = from.toBase(val);
+        result = to.fromBase(base);
+      } else {
+        const base = from.toBase(val);
+        const toBaseOne = to.toBase(1);
+        result = base / toBaseOne;
+      }
+
+      const out = `${formatNumber(val)} ${from.id.toUpperCase()} = ${formatNumber(result)} ${to.id.toUpperCase()}`;
+      showResult(out);
+    }
+
+    function swap(){
+      const aVal = fromSelect.dataset.value;
+      const aLabel = fromSelect.querySelector(".cselect-btn").textContent;
+
+      const bVal = toSelect.dataset.value;
+      const bLabel = toSelect.querySelector(".cselect-btn").textContent;
+
+      setCSelectValue(fromSelect, bVal, bLabel);
+      setCSelectValue(toSelect, aVal, aLabel);
+
+      hideResult();
+      valueEl.focus();
+    }
+
+    function resetAll(){
+      setCSelectValue(categorySelect, "length", "Length");
+      categorySelect.querySelectorAll(".cselect-item").forEach(i => {
+        i.classList.toggle("active", i.dataset.value === "length");
+      });
+
+      valueEl.value = "";
+      updateUnits();
+      hideResult();
+      valueEl.focus();
+    }
+
+    async function copyResult(){
+      const text = resultText.textContent;
+      if (!text || text === "—") return;
+
+      try{
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => copyBtn.textContent = "Copy", 900);
+      } catch {
+        copyBtn.textContent = "Copy failed";
+        setTimeout(() => copyBtn.textContent = "Copy", 900);
+      }
+    }
+
+    initCategorySelect();
+    initCSelect(fromSelect);
+    initCSelect(toSelect);
+
+    convertBtn.addEventListener("click", (e) => { e.preventDefault(); convert(); });
+    swapBtn.addEventListener("click", (e) => { e.preventDefault(); swap(); });
+    resetBtn.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
+    copyBtn.addEventListener("click", (e) => { e.preventDefault(); copyResult(); });
+
+    valueEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") convert();
+      if (e.key === "Escape") closeAllSelects();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAllSelects();
+    });
+
+    updateUnits();
+
+    // ===== Word Counter =====
+    const wcText = document.getElementById("wcText");
+    const wcClearBtn = document.getElementById("wcClearBtn");
+    const wcCopyBtn = document.getElementById("wcCopyBtn");
+
+    const wcWords = document.getElementById("wcWords");
+    const wcChars = document.getElementById("wcChars");
+    const wcCharsNoSpaces = document.getElementById("wcCharsNoSpaces");
+    const wcLines = document.getElementById("wcLines");
+    const wcSentences = document.getElementById("wcSentences");
+    const wcParagraphs = document.getElementById("wcParagraphs");
+    const wcReadTime = document.getElementById("wcReadTime");
+    const wcSpeakTime = document.getElementById("wcSpeakTime");
+
+    function formatMinutes(totalMinutes){
+      const m = Math.max(0, Math.round(totalMinutes));
+      if (m < 60) return `${m}m`;
+      const h = Math.floor(m / 60);
+      const min = m % 60;
+      return `${h}h ${min}m`;
+    }
+
+    function updateWordCounter(){
+      const text = wcText.value || "";
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+
+      const chars = text.length;
+      const charsNoSp = text.replace(/\s/g, "").length;
+
+      const lines = text.length ? text.split(/\r\n|\r|\n/).length : 0;
+
+      const sentenceMatches = text
+        .replace(/\s+/g, " ")
+        .trim()
+        .match(/[^.!?]+[.!?]+/g);
+      const sentences = sentenceMatches ? sentenceMatches.length : (text.trim() ? 1 : 0);
+
+      const paragraphs = text.trim()
+        ? text.trim().split(/\n\s*\n/).filter(p => p.trim().length > 0).length
+        : 0;
+
+      const readMin = words / 200;
+      const speakMin = words / 130;
+
+      wcWords.textContent = String(words);
+      wcChars.textContent = String(chars);
+      wcCharsNoSpaces.textContent = String(charsNoSp);
+      wcLines.textContent = String(lines);
+      wcSentences.textContent = String(Math.max(0, Math.floor(sentences)));
+      wcParagraphs.textContent = String(paragraphs);
+      wcReadTime.textContent = formatMinutes(readMin);
+      wcSpeakTime.textContent = formatMinutes(speakMin);
+    }
+
+    wcText.addEventListener("input", updateWordCounter);
+
+    wcClearBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      wcText.value = "";
+      updateWordCounter();
+      wcText.focus();
+    });
+
+    wcCopyBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const text = wcText.value || "";
+      if (!text) return;
+
+      try{
+        await navigator.clipboard.writeText(text);
+        wcCopyBtn.textContent = "Copied!";
+        setTimeout(() => wcCopyBtn.textContent = "Copy text", 900);
+      } catch {
+        wcCopyBtn.textContent = "Copy failed";
+        setTimeout(() => wcCopyBtn.textContent = "Copy text", 900);
+      }
+    });
+
+    updateWordCounter();
+  </script>
 </body>
 </html>
