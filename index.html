@@ -1,261 +1,415 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="websiteicon.png" type="image/png" />
-  <title>LX's Workbench</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nothing here yet</title>
+
+  <!-- andere Schrift -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg: #2e2e2e;
-      --accent: #7ecbff;
-      --accentSoft: rgba(126,203,255,0.16);
-      --glass: rgba(46,46,46,0.55);
-      --text: #ffffff;
-      --muted: #9fdcff;
+      --bg0:#070812;
+      --bg1:#0a1020;
+      --text: rgba(255,255,255,.86);
+      --muted: rgba(255,255,255,.12);
     }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; }
+    body{
+      overflow:hidden;
       background:
-        radial-gradient(900px 520px at 15% 10%, rgba(126,203,255,0.18), transparent 60%),
-        radial-gradient(900px 520px at 85% 15%, rgba(126,203,255,0.10), transparent 60%),
-        var(--bg);
+        radial-gradient(900px 500px at 50% 35%, rgba(120,160,255,.18), transparent 60%),
+        radial-gradient(700px 450px at 20% 80%, rgba(255,120,200,.12), transparent 60%),
+        linear-gradient(135deg, var(--bg0), var(--bg1));
+      color: var(--text);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    /* ===== Header ===== */
-    .header {
-      position: fixed;
-      top: 18px;
-      left: 18px;
-      right: 18px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 10px 14px;
-      background: var(--glass);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      z-index: 10;
+    /* subtile Sterne */
+    .stars{
+      position:fixed; inset:0;
+      background:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.35), transparent 55%),
+        radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,.25), transparent 55%),
+        radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,.28), transparent 55%),
+        radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(1px 1px at 50% 90%, rgba(255,255,255,.18), transparent 55%);
+      opacity:.55;
+      pointer-events:none;
+      filter: blur(.2px);
+      animation: twinkle 6s ease-in-out infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{ opacity:.45; transform: translate3d(0,0,0); }
+      50%{ opacity:.7; transform: translate3d(0,-1px,0); }
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
+    .center{
+      position:fixed; inset:0;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      pointer-events:none;
+      z-index: 5;
     }
-
-    .profile-pic {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent);
-      box-shadow: 0 0 12px rgba(126, 203, 255, 0.45);
-      flex: 0 0 auto;
+    .card{
+      pointer-events:none;
+      text-align:center;
+      padding: 26px 30px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 22px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(8px);
+      max-width: min(760px, 92vw);
     }
-
-    .profile-name {
-      font-size: 1.25rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    /* ===== Modern Nav (Pill Tabs) ===== */
-    .nav-wrap{
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0 12px;
-    }
-
-    .nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(126,203,255,0.16);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.16);
-      width: 100%;
-      justify-content: center;
-    }
-
-    .nav a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: rgba(174,226,255,0.95);
-      font-weight: 800;
-      font-size: 1.05rem;
-      text-decoration: none;
-      opacity: 0.9;
-      transition: transform .15s ease, background .2s ease, opacity .2s ease, box-shadow .2s ease;
-    }
-
-    .nav a:hover {
-      opacity: 1;
-      transform: translateY(-1px);
-      background: rgba(126,203,255,0.10);
-      box-shadow: 0 0 0 1px rgba(126,203,255,0.18) inset;
-    }
-
-    .nav a.active {
-      color: #0b1b24;
-      background: linear-gradient(180deg, rgba(126,203,255,0.95), rgba(126,203,255,0.75));
-      box-shadow: 0 10px 25px rgba(126,203,255,0.18);
-      opacity: 1;
-    }
-
-    /* ===== Mobile Menu ===== */
-    .menu-wrap { position: relative; }
-
-    .menu-btn {
-      display: none;
-      border: 1px solid rgba(126,203,255,0.28);
-      background: rgba(255,255,255,0.04);
-      color: rgba(174,226,255,0.95);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    }
-
-    .mobile-menu {
-      display: none;
-      position: absolute;
-      top: 54px;
-      right: 0;
-      background: rgba(46,46,46,0.92);
-      border: 1px solid rgba(126,203,255,0.22);
-      border-radius: 14px;
-      padding: 8px;
-      min-width: 190px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-    }
-
-    .mobile-menu a {
-      display: block;
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: rgba(174,226,255,0.95);
-      font-weight: 800;
-      text-decoration: none;
-      opacity: 0.95;
-    }
-
-    .mobile-menu a:hover {
-      background: rgba(126,203,255,0.12);
-      opacity: 1;
-    }
-
-    /* ===== Hero ===== */
-    .container {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      text-align: center;
-      padding: 220px 20px 0;
-      box-sizing: border-box;
-    }
-
-    .headline {
-      font-size: 4.0rem;
-      font-weight: 900;
-      color: var(--accent);
-      margin-bottom: 1rem;
+    .headline{
+      font-family: "Rubik Mono One", system-ui, sans-serif;
+      font-size: clamp(22px, 4.2vw, 46px);
+      letter-spacing: .5px;
+      margin: 0;
       line-height: 1.15;
-      letter-spacing: -0.5px;
+    }
+    .sub{
+      margin: 14px 0 0;
+      font-size: clamp(12px, 1.4vw, 14px);
+      color: rgba(255,255,255,.58);
+      letter-spacing: .2px;
     }
 
-    .headline span {
-      color: #ffffff;
-      text-shadow: 0 0 18px rgba(126, 203, 255, 0.45);
+    .yet{
+      display:inline-block;
+      margin-left: 10px;
+      padding: 0 10px;
+      border-radius: 12px;
+      transform-origin: 50% 80%;
+      background: linear-gradient(
+        90deg,
+        #ff3b3b,
+        #ff9f3b,
+        #ffe23b,
+        #3bff7a,
+        #3bd6ff,
+        #3b6bff,
+        #b63bff,
+        #ff3bbf,
+        #ff3b3b
+      );
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.14));
+      animation: rainbow 2.2s linear infinite, bob 1.8s ease-in-out infinite;
+    }
+    @keyframes rainbow{
+      0%{ background-position: 0% 50%; }
+      100%{ background-position: 100% 50%; }
+    }
+    @keyframes bob{
+      0%,100%{ transform: translateY(0) rotate(-1deg); }
+      50%{ transform: translateY(-6px) rotate(1deg); }
     }
 
-    .subtext {
-      font-size: 1.35rem;
-      color: var(--muted);
-      opacity: 0.95;
-      max-width: 780px;
+    /* Pixel-Katze (Template) */
+    .cat{
+      position: fixed;
+      left: 20px; top: 20px;
+      width: calc(var(--px) * 16);
+      height: calc(var(--px) * 12);
+      --px: 4px;                 /* Pixelgröße */
+      image-rendering: pixelated; /* crisp */
+      pointer-events: none;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
+      will-change: transform;
+      z-index: 2;
     }
 
-    /* ===== Responsive ===== */
-    @media (max-width: 600px) {
-      .nav-wrap { display: none; }
-      .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
-      .profile-name { font-size: 1.05rem; }
-      .profile-pic { width: 44px; height: 44px; }
-      .container { padding-top: 170px; }
-      .headline { font-size: 2.4rem; }
-      .subtext { font-size: 1.05rem; }
+    .cat::before{
+      content:"";
+      position:absolute;
+      left:0; top:0;
+      width: var(--px);
+      height: var(--px);
+      background: transparent;
+      box-shadow:
+        /* Ohren */
+        calc(var(--px)*3)  calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*1)  #f2c38b,
+
+        /* Kopf */
+        calc(var(--px)*2)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*3)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*7)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*8)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*13) calc(var(--px)*2)  #f2c38b,
+
+        calc(var(--px)*2)  calc(var(--px)*3)  #f2c38b,
+        calc(var(--px)*13) calc(var(--px)*3)  #f2c38b,
+
+        /* Augen */
+        calc(var(--px)*5)  calc(var(--px)*4)  #1f2332,
+        calc(var(--px)*10) calc(var(--px)*4)  #1f2332,
+
+        /* Schnute + Nase */
+        calc(var(--px)*7)  calc(var(--px)*5)  #ffe3c7,
+        calc(var(--px)*8)  calc(var(--px)*5)  #ffe3c7,
+        calc(var(--px)*7)  calc(var(--px)*6)  #ffe3c7,
+        calc(var(--px)*8)  calc(var(--px)*6)  #ffe3c7,
+        calc(var(--px)*7)  calc(var(--px)*5)  #ff7aa7,
+
+        /* Körper */
+        calc(var(--px)*4)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*6)  #f2c38b,
+
+        calc(var(--px)*3)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*7)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*8)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*7)  #f2c38b,
+
+        /* Beine frame A */
+        calc(var(--px)*5)  calc(var(--px)*9)  #c98d5b,
+        calc(var(--px)*10) calc(var(--px)*9)  #c98d5b,
+
+        /* Schwanz */
+        calc(var(--px)*13) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*14) calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*15) calc(var(--px)*5)  #f2c38b;
     }
+
+    /* Frame B */
+    .cat.walkB::before{
+      box-shadow:
+        calc(var(--px)*3)  calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*1)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*1)  #f2c38b,
+
+        calc(var(--px)*2)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*3)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*7)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*8)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*13) calc(var(--px)*2)  #f2c38b,
+        calc(var(--px)*2)  calc(var(--px)*3)  #f2c38b,
+        calc(var(--px)*13) calc(var(--px)*3)  #f2c38b,
+
+        calc(var(--px)*5)  calc(var(--px)*4)  #1f2332,
+        calc(var(--px)*10) calc(var(--px)*4)  #1f2332,
+
+        calc(var(--px)*7)  calc(var(--px)*5)  #ffe3c7,
+        calc(var(--px)*8)  calc(var(--px)*5)  #ffe3c7,
+        calc(var(--px)*7)  calc(var(--px)*6)  #ffe3c7,
+        calc(var(--px)*8)  calc(var(--px)*6)  #ffe3c7,
+        calc(var(--px)*7)  calc(var(--px)*5)  #ff7aa7,
+
+        calc(var(--px)*4)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*6)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*6)  #f2c38b,
+
+        calc(var(--px)*3)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*4)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*5)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*6)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*7)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*8)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*9)  calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*10) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*11) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*12) calc(var(--px)*7)  #f2c38b,
+
+        /* Beine frame B */
+        calc(var(--px)*6)  calc(var(--px)*9)  #c98d5b,
+        calc(var(--px)*9)  calc(var(--px)*9)  #c98d5b,
+
+        /* Schwanz B */
+        calc(var(--px)*13) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*14) calc(var(--px)*7)  #f2c38b,
+        calc(var(--px)*15) calc(var(--px)*6)  #f2c38b;
+    }
+
+    .bubble{
+      position: fixed;
+      left: 0; top: 0;
+      transform: translate(-50%, -120%);
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.75);
+      font-size: 12px;
+      letter-spacing: .2px;
+      backdrop-filter: blur(6px);
+      pointer-events:none;
+      opacity: 0;
+      transition: opacity .25s ease;
+      white-space: nowrap;
+      z-index: 4;
+    }
+    .bubble.show{ opacity: 1; }
   </style>
 </head>
 
 <body>
-  <div class="header">
-    <div class="header-left">
-      <img src="profile.jpg" alt="Profilbild" class="profile-pic" />
-      <div class="profile-name">Luis Maximilian</div>
-    </div>
+  <div class="stars"></div>
 
-    <div class="nav-wrap">
-      <nav class="nav">
-        <a href="index.html" class="active">Home</a>
-        <a href="tools.html">Useful Tools</a>
-        <a href="games.html">Games</a>
-      </nav>
-    </div>
-
-    <div class="menu-wrap">
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
-      <div class="mobile-menu" id="mobileMenu">
-        <a href="index.html">Home</a>
-        <a href="tools.html">Useful Tools</a>
-        <a href="games.html">Games</a>
-      </div>
+  <div class="center">
+    <div class="card">
+      <h1 class="headline">
+        There’s nothing here <span class="yet">yet</span>
+      </h1>
+      <p class="sub">(except my little friends patrolling)</p>
     </div>
   </div>
 
-  <div class="container">
-    <div class="headline">
-      This website is right now being built by <span>Luis</span>
-    </div>
-    <div class="subtext">
-      Thanks for your patience.
-    </div>
-  </div>
+  <div id="bubble" class="bubble" aria-hidden="true">meow</div>
 
   <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
+    (() => {
+      const CAT_COUNT = 6; // <-- Anzahl Katzen hier ändern
+      const cats = [];
+      const bubble = document.getElementById("bubble");
 
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const open = mobileMenu.style.display === "block";
-      mobileMenu.style.display = open ? "none" : "block";
-    });
+      function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+      function rand(min, max){ return min + Math.random() * (max - min); }
 
-    document.addEventListener("click", () => {
-      mobileMenu.style.display = "none";
-    });
+      function createCat(i){
+        const el = document.createElement("div");
+        el.className = "cat";
+        el.style.setProperty("--px", `${Math.floor(rand(3, 6))}px`); // kleine Größen-Variation
+        document.body.appendChild(el);
+
+        return {
+          id: i,
+          el,
+          x: rand(20, window.innerWidth - 80),
+          y: rand(20, window.innerHeight - 80),
+          vx: rand(0.8, 1.6) * (Math.random() < 0.5 ? 1 : -1),
+          vy: rand(0.6, 1.4) * (Math.random() < 0.5 ? 1 : -1),
+          frame: false,
+          nextMeow: performance.now() + rand(900, 4500)
+        };
+      }
+
+      for(let i=0;i<CAT_COUNT;i++){
+        cats.push(createCat(i));
+      }
+
+      function showBubble(text, x, y){
+        bubble.textContent = text;
+        bubble.style.left = x + "px";
+        bubble.style.top  = y + "px";
+        bubble.classList.add("show");
+        clearTimeout(showBubble._t);
+        showBubble._t = setTimeout(() => bubble.classList.remove("show"), 650);
+      }
+
+      function tick(now){
+        for(const c of cats){
+          const rect = c.el.getBoundingClientRect();
+          const w = rect.width || 64;
+          const h = rect.height || 48;
+
+          const maxX = window.innerWidth - w - 8;
+          const maxY = window.innerHeight - h - 8;
+
+          c.x += c.vx;
+          c.y += c.vy;
+
+          // bounce
+          if (c.x <= 8)   { c.x = 8;   c.vx *= -1; }
+          if (c.x >= maxX){ c.x = maxX; c.vx *= -1; }
+          if (c.y <= 8)   { c.y = 8;   c.vy *= -1; }
+          if (c.y >= maxY){ c.y = maxY; c.vy *= -1; }
+
+          const goingRight = c.vx > 0;
+          const tilt = clamp(c.vy * 6, -8, 8);
+          c.el.style.transform = `translate(${c.x}px, ${c.y}px) scaleX(${goingRight ? 1 : -1}) rotate(${tilt}deg)`;
+
+          // walk animation
+          if (Math.floor((now + c.id * 90) / 160) % 2 === 0) c.el.classList.remove("walkB");
+          else c.el.classList.add("walkB");
+
+          // meow sometimes
+          if (now > c.nextMeow && Math.random() < 0.65){
+            showBubble(Math.random() < 0.55 ? "meow" : "mrrp", c.x + w * 0.55, c.y);
+            c.nextMeow = now + rand(1800, 5200);
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      // click: boost the nearest cat
+      window.addEventListener("pointerdown", (e) => {
+        let best = null;
+        let bestD = Infinity;
+
+        for(const c of cats){
+          const dx = (c.x - e.clientX);
+          const dy = (c.y - e.clientY);
+          const d = dx*dx + dy*dy;
+          if(d < bestD){ bestD = d; best = c; }
+        }
+
+        if(!best) return;
+
+        const dx = (best.x - e.clientX);
+        const dy = (best.y - e.clientY);
+        const mag = Math.max(1, Math.hypot(dx, dy));
+
+        best.vx += (dx / mag) * 1.6;
+        best.vy += (dy / mag) * 1.2;
+
+        best.vx = clamp(best.vx, -3.2, 3.2);
+        best.vy = clamp(best.vy, -2.8, 2.8);
+
+        const r = best.el.getBoundingClientRect();
+        showBubble("!", best.x + r.width * 0.55, best.y);
+      });
+
+      window.addEventListener("resize", () => {
+        for(const c of cats){
+          const rect = c.el.getBoundingClientRect();
+          c.x = clamp(c.x, 8, window.innerWidth - rect.width - 8);
+          c.y = clamp(c.y, 8, window.innerHeight - rect.height - 8);
+        }
+      });
+
+      requestAnimationFrame(tick);
+    })();
   </script>
 </body>
 </html>
