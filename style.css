@@ -544,3 +544,94 @@ footer {
     max-width: 100%;
   }
 }
+
+.hidden {
+  display: none !important;
+}
+
+.mood-card {
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.58);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: 0.2s ease;
+  z-index: 2;
+}
+
+.delete-btn:hover {
+  background: #ef4444;
+  transform: scale(1.08);
+}
+
+.moodboard-auth {
+  max-width: 860px;
+  margin: 0 auto 24px;
+  padding: 20px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(19, 25, 43, 0.95), rgba(10, 14, 28, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+}
+
+.auth-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.auth-input {
+  min-width: 220px;
+  max-width: 280px;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: white;
+  outline: none;
+}
+
+.auth-input::placeholder {
+  color: #94a3b8;
+}
+
+.auth-user {
+  color: #d8b4fe;
+  font-weight: 700;
+}
+
+.auth-status {
+  margin-top: 14px;
+  text-align: center;
+  color: #aeb9cc;
+}
+
+@media (max-width: 640px) {
+  .auth-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth-input,
+  #loginBtn,
+  #logoutBtn {
+    width: 100%;
+    max-width: 100%;
+  }
+}
