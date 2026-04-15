@@ -186,192 +186,218 @@
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const SUPABASE_URL = "https://jynthiimlcyhuwkckngr.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bnRoaWltbGN5aHV3a2NrbmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMDAyMDYsImV4cCI6MjA5MTc3NjIwNn0.YKuWKxSCQ_xkwixfW8ftZA8L-IXtAZSI87HAF-IlheM";
-      const BUCKET_NAME = "moodboard";
+  document.addEventListener("DOMContentLoaded", () => {
+    const SUPABASE_URL = "https://jynthiimlcyhuwkckngr.supabase.co";
+    const SUPABASE_ANON_KEY = "DEIN_ANON_KEY_HIER";
+    const BUCKET_NAME = "moodboard";
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const emailInput = document.getElementById("emailInput");
-      const passwordInput = document.getElementById("passwordInput");
-      const loginBtn = document.getElementById("loginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const loginRow = document.getElementById("loginRow");
-      const userRow = document.getElementById("userRow");
-      const userInfo = document.getElementById("userInfo");
-      const authStatus = document.getElementById("authStatus");
-      const uploadInput = document.getElementById("moodboardUpload");
-      const uploadLabel = document.getElementById("uploadLabel");
-      const moodboardGrid = document.getElementById("moodboardGrid");
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginRow = document.getElementById("loginRow");
+    const userRow = document.getElementById("userRow");
+    const userInfo = document.getElementById("userInfo");
+    const authStatus = document.getElementById("authStatus");
+    const uploadInput = document.getElementById("moodboardUpload");
+    const uploadLabel = document.getElementById("uploadLabel");
+    const moodboardGrid = document.getElementById("moodboardGrid");
 
-      const imageExts = ["jpg", "jpeg", "png", "webp", "gif", "avif"];
-      const videoExts = ["mp4", "webm", "mov", "m4v", "ogg"];
+    const imageExts = ["jpg", "jpeg", "png", "webp", "gif", "avif"];
+    const videoExts = ["mp4", "webm", "mov", "m4v", "ogg"];
 
-      function setLoggedInUI(user) {
-        if (user) {
-          loginRow.classList.add("hidden");
-          userRow.classList.remove("hidden");
-          uploadLabel.classList.remove("hidden");
-          userInfo.textContent = `Logged in as ${user.email}`;
-          authStatus.textContent = "You can upload media.";
-        } else {
-          loginRow.classList.remove("hidden");
-          userRow.classList.add("hidden");
-          uploadLabel.classList.add("hidden");
-          userInfo.textContent = "";
-          authStatus.textContent = "Not logged in.";
-        }
+    function setLoggedInUI(user) {
+      if (user) {
+        loginRow.classList.add("hidden");
+        userRow.classList.remove("hidden");
+        uploadLabel.classList.remove("hidden");
+        userInfo.textContent = `Logged in as ${user.email}`;
+        authStatus.textContent = "You can upload media.";
+      } else {
+        loginRow.classList.remove("hidden");
+        userRow.classList.add("hidden");
+        uploadLabel.classList.add("hidden");
+        userInfo.textContent = "";
+        authStatus.textContent = "Not logged in.";
+      }
+    }
+
+    function createMoodCard(url, fileName) {
+      const extension = fileName.split(".").pop().toLowerCase();
+      const card = document.createElement("div");
+      card.className = "mood-card";
+
+      if (imageExts.includes(extension)) {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = fileName;
+        img.loading = "lazy";
+        card.appendChild(img);
+      } else if (videoExts.includes(extension)) {
+        const video = document.createElement("video");
+        video.src = url;
+        video.controls = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        card.appendChild(video);
       }
 
-      function createMoodCard(url, fileName) {
-        const extension = fileName.split(".").pop().toLowerCase();
-        const card = document.createElement("div");
-        card.className = "mood-card";
+      return card;
+    }
 
-        if (imageExts.includes(extension)) {
-          const img = document.createElement("img");
-          img.src = url;
-          img.alt = fileName;
-          img.loading = "lazy";
-          card.appendChild(img);
-        } else if (videoExts.includes(extension)) {
-          const video = document.createElement("video");
-          video.src = url;
-          video.controls = true;
-          video.playsInline = true;
-          video.preload = "metadata";
-          card.appendChild(video);
-        }
+    async function loadMoodboard() {
+      moodboardGrid.innerHTML = "";
 
-        return card;
+      const { data, error } = await supabaseClient.storage
+        .from(BUCKET_NAME)
+        .list("", {
+          limit: 100,
+          sortBy: { column: "name", order: "desc" }
+        });
+
+      console.log("Moodboard list data:", data);
+      console.log("Moodboard list error:", error);
+
+      if (error) {
+        authStatus.textContent = `Could not load moodboard: ${error.message}`;
+        console.error("Load moodboard error:", error);
+        return;
       }
 
-      async function loadMoodboard() {
-        moodboardGrid.innerHTML = "";
+      if (!data || data.length === 0) {
+        authStatus.textContent = "Moodboard is empty.";
+        return;
+      }
+
+      data.forEach((file) => {
+        if (!file.name) return;
+
+        const { data: publicData } = supabaseClient.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(file.name);
+
+        const card = createMoodCard(publicData.publicUrl, file.name);
+        moodboardGrid.appendChild(card);
+      });
+    }
+
+    async function login() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        authStatus.textContent = "Please enter email and password.";
+        return;
+      }
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      console.log("Login data:", data);
+      console.log("Login error:", error);
+      console.log("Login user id:", data?.user?.id);
+
+      if (error) {
+        authStatus.textContent = error.message;
+        return;
+      }
+
+      setLoggedInUI(data.user);
+    }
+
+    async function logout() {
+      const { error } = await supabaseClient.auth.signOut();
+
+      console.log("Logout error:", error);
+
+      if (error) {
+        authStatus.textContent = error.message;
+        return;
+      }
+
+      setLoggedInUI(null);
+    }
+
+    async function uploadFiles(files) {
+      const { data: authData, error: authError } = await supabaseClient.auth.getUser();
+
+      console.log("getUser authError:", authError);
+      console.log("Logged in user:", authData?.user);
+      console.log("Logged in user id:", authData?.user?.id);
+
+      if (!authData.user) {
+        authStatus.textContent = "You must be logged in to upload.";
+        return;
+      }
+
+      authStatus.textContent = "Uploading...";
+
+      for (const file of files) {
+        const safeName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
+
+        console.log("Uploading to bucket:", BUCKET_NAME);
+        console.log("Uploading filename:", safeName);
 
         const { data, error } = await supabaseClient.storage
           .from(BUCKET_NAME)
-          .list("", {
-            limit: 100,
-            sortBy: { column: "name", order: "desc" }
+          .upload(safeName, file, {
+            cacheControl: "3600",
+            upsert: false
           });
 
-        if (error) {
-          authStatus.textContent = "Could not load moodboard.";
-          console.error(error);
-          return;
-        }
-
-        if (!data || data.length === 0) {
-          authStatus.textContent = "Moodboard is empty.";
-          return;
-        }
-
-        data.forEach((file) => {
-          if (!file.name) return;
-
-          const { data: publicData } = supabaseClient.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(file.name);
-
-          const card = createMoodCard(publicData.publicUrl, file.name);
-          moodboardGrid.appendChild(card);
-        });
-      }
-
-      async function login() {
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-        if (!email || !password) {
-          authStatus.textContent = "Please enter email and password.";
-          return;
-        }
-
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
+        console.log("Upload response data:", data);
+        console.log("Upload response error:", error);
 
         if (error) {
-          authStatus.textContent = error.message;
+          authStatus.textContent = `Upload failed: ${error.message}`;
+          console.error("Full upload error:", error);
           return;
         }
-
-        setLoggedInUI(data.user);
       }
 
-      async function logout() {
-        const { error } = await supabaseClient.auth.signOut();
+      authStatus.textContent = "Upload complete.";
+      await loadMoodboard();
+    }
 
-        if (error) {
-          authStatus.textContent = error.message;
-          return;
-        }
-
-        setLoggedInUI(null);
-      }
-
-      async function uploadFiles(files) {
-        const { data: authData } = await supabaseClient.auth.getUser();
-
-        if (!authData.user) {
-          authStatus.textContent = "You must be logged in to upload.";
-          return;
-        }
-
-        authStatus.textContent = "Uploading...";
-
-        for (const file of files) {
-          const safeName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-
-          const { error } = await supabaseClient.storage
-            .from(BUCKET_NAME)
-            .upload(safeName, file, {
-              cacheControl: "3600",
-              upsert: false
-            });
-
-          if (error) {
-            authStatus.textContent = `Upload failed: ${file.name}`;
-            console.error(error);
-            return;
-          }
-        }
-
-        authStatus.textContent = "Upload complete.";
-        await loadMoodboard();
-      }
-
-      loginBtn.addEventListener("click", async () => {
-        await login();
-      });
-
-      logoutBtn.addEventListener("click", async () => {
-        await logout();
-      });
-
-      uploadInput.addEventListener("change", async (event) => {
-        const files = Array.from(event.target.files || []);
-        if (!files.length) return;
-
-        await uploadFiles(files);
-        uploadInput.value = "";
-      });
-
-      supabaseClient.auth.onAuthStateChange((_event, session) => {
-        setLoggedInUI(session?.user || null);
-      });
-
-      async function init() {
-        const { data } = await supabaseClient.auth.getSession();
-        setLoggedInUI(data.session?.user || null);
-        await loadMoodboard();
-      }
-
-      init();
+    loginBtn.addEventListener("click", async () => {
+      await login();
     });
-  </script>
+
+    logoutBtn.addEventListener("click", async () => {
+      await logout();
+    });
+
+    uploadInput.addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      await uploadFiles(files);
+      uploadInput.value = "";
+    });
+
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      console.log("Auth state changed:", session);
+      console.log("Auth session user id:", session?.user?.id);
+      setLoggedInUI(session?.user || null);
+    });
+
+    async function init() {
+      const { data, error } = await supabaseClient.auth.getSession();
+
+      console.log("Initial session data:", data);
+      console.log("Initial session error:", error);
+      console.log("Initial session user id:", data?.session?.user?.id);
+
+      setLoggedInUI(data.session?.user || null);
+      await loadMoodboard();
+    }
+
+    init();
+  });
+</script>
 </body>
 </html>
