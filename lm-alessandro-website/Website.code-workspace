@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "Website",
+			"path": "."
+		},
+		{
+			"name": "Website",
+			"path": "C:/Users/Luis Maximilian/Website"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Website"
+	}
+}

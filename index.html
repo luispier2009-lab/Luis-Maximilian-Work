@@ -3,59 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>LM-Alessandro</title>
-  <meta name="description" content="LM-Alessandro — tools, apps and projects by Alessandro." />
-
+  <meta name="description" content="LM-Alessandro — private website hub for commands, tickets, ideas and access management." />
   <link rel="icon" type="image/png" href="websiteicon.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
   <header class="header">
-    <a href="#" class="brand">
+    <a href="#" class="brand" aria-label="LM-Alessandro Home">
       <span class="brand-mark">LM</span>
       <span class="brand-name">LM-Alessandro</span>
     </a>
-
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
       <a href="#features">Features</a>
-      <a href="#download">Download</a>
       <a href="#contact">Contact</a>
+      <button type="button" class="nav-login" data-open-login>Login</button>
     </nav>
   </header>
 
-  <main>
+  <main id="publicSite">
     <section class="hero">
       <div class="hero-content">
         <p class="label">luismaximilian.work</p>
-
-        <h1>Tools for Discord, development and creative work.</h1>
-
+        <h1>Tools for Discord bots, code and private workflows.</h1>
         <p class="hero-text">
-          LM-Alessandro is a personal project hub for apps, bot tools,
-          reports, feedback and future dashboard features.
+          LM-Alessandro is a private website hub for managing Discord bot commands,
+          code tabs, team access, tickets, ideas and project information.
         </p>
-
         <div class="actions">
-          <a href="#download" class="button primary">Download App</a>
+          <button class="button primary" type="button" data-open-login>Open Website Hub</button>
           <a href="#features" class="button secondary">View Features</a>
         </div>
       </div>
 
       <div class="preview-card">
-        <div class="preview-top">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
+        <div class="preview-top"><span></span><span></span><span></span></div>
         <div class="preview-body">
-          <p class="preview-label">LM Desktop App</p>
-          <h2>Just make it simple.</h2>
+          <p class="preview-label">LM-Alessandro Hub</p>
+          <h2>Bot tools in one place.</h2>
           <p>
-            A simple desktop app for selected users, reports, feedback,
-            project updates and admin tools.
+            Organize commands, save code tabs, handle tickets, collect ideas
+            and control access with a structured private dashboard.
           </p>
         </div>
       </div>
@@ -64,81 +52,229 @@
     <section class="section" id="features">
       <div class="section-title">
         <p class="label">Features</p>
-        <h2>Simple, focused and useful.</h2>
+        <h2>Focused on what the bot hub actually needs.</h2>
       </div>
-
       <div class="feature-grid">
-        <article>
-          <h3>User Accounts</h3>
-          <p>Only selected users can access the app.</p>
-        </article>
-
-        <article>
-          <h3>Permissions</h3>
-          <p>Different users can see different sections.</p>
-        </article>
-
-        <article>
-          <h3>Bug Reports</h3>
-          <p>Issues can be submitted and reviewed.</p>
-        </article>
-
-        <article>
-          <h3>Feedback</h3>
-          <p>Users can share ideas and suggestions.</p>
-        </article>
-
-        <article>
-          <h3>Project Updates</h3>
-          <p>Show what is currently being worked on.</p>
-        </article>
-
-        <article>
-          <h3>Admin Tools</h3>
-          <p>Private tools for managing users and reports.</p>
-        </article>
+        <article><h3>Bot Commands</h3><p>Keep command information organized with categories, status and internal notes.</p></article>
+        <article><h3>Code Tabs</h3><p>Store command files, snippets and project notes in a clear workspace.</p></article>
+        <article><h3>Ticket System</h3><p>Handle bug reports, support requests and questions with priorities and status tracking.</p></article>
+        <article><h3>Idea Board</h3><p>Collect suggestions, review them and move them through a clean workflow.</p></article>
+        <article><h3>User Management</h3><p>Create accounts, change passwords, assign roles and manage permissions.</p></article>
+        <article><h3>Access Control</h3><p>Decide who can only view content and who is allowed to manage it.</p></article>
       </div>
     </section>
 
-    <section class="section download" id="download">
+    <section class="section contact" id="contact">
       <div>
-        <p class="label">Download</p>
-        <h2>LM Desktop App</h2>
-        <p>
-          The Windows app is currently in development.
-          The download will be available here once the first version is ready.
-        </p>
+        <p class="label">Contact</p>
+        <h2>Get in touch.</h2>
+        <p>For questions, feedback or project-related messages, you can contact me here.</p>
       </div>
-
-      <a href="#" class="button primary">Download for Windows</a>
+      <div class="contact-grid">
+        <a class="contact-card" href="mailto:asiansouthmanagement@gmail.com"><span>Email</span><strong>asiansouthmanagement@gmail.com</strong></a>
+        <div class="contact-card"><span>Discord</span><strong>@alessandrx09</strong></div>
+      </div>
     </section>
-<section class="section contact" id="contact">
-  <div>
-    <p class="label">Contact</p>
-    <h2>Get in touch.</h2>
-    <p>
-      For questions, feedback or project-related messages, you can contact me here.
-    </p>
-  </div>
-
-  <div class="contact-grid">
-    <a class="contact-card" href="mailto:reip.revilo@googlemail.com">
-      <span>Email</span>
-      <strong>asiansouthmanagement@gmail.com</strong>
-    </a>
-
-    <div class="contact-card">
-      <span>Discord</span>
-      <strong>@alessandrx09</strong>
-    </div>
-  </div>
-</section>
-
   </main>
 
-  <footer class="footer">
+  <footer class="footer" id="publicFooter">
     <p>© 2026 LM-Alessandro</p>
     <p>luismaximilian.work</p>
   </footer>
+
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-login></div>
+    <section class="login-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <button class="modal-close" type="button" data-close-login aria-label="Close login">×</button>
+      <p class="label">Private Access</p>
+      <h2 id="loginTitle">Sign in to LM-Alessandro Hub</h2>
+      <p class="login-subtitle">Use your account to open the private dashboard.</p>
+      <form id="loginForm" class="login-form">
+        <label>Username<input id="loginUsername" type="text" autocomplete="username" placeholder="Username" required /></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required /></label>
+        <button class="button primary" type="submit">Sign In</button>
+        <p class="form-message" id="loginMessage"></p>
+      </form>
+    </section>
+  </div>
+
+  <section class="hub" id="hub" aria-hidden="true">
+    <div class="hub-shell">
+      <aside class="hub-sidebar">
+        <a href="#" class="brand hub-brand"><span class="brand-mark">LM</span><span class="brand-name">LM-Alessandro</span></a>
+        <nav class="hub-nav" aria-label="Hub navigation">
+          <button type="button" class="active" data-panel="dashboard" data-gate="dashboard">Dashboard</button>
+          <button type="button" data-panel="tickets" data-gate="tickets">Tickets</button>
+          <button type="button" data-panel="ideas" data-gate="ideas">Ideas</button>
+          <button type="button" data-panel="commands" data-gate="commands">Commands</button>
+          <button type="button" data-panel="code" data-gate="code">Code Tabs</button>
+          <button type="button" data-panel="users" data-gate="users">Users</button>
+          <button type="button" data-panel="settings" data-gate="settings">Settings</button>
+        </nav>
+        <button class="button secondary logout-button" type="button" id="logoutButton">Log Out</button>
+      </aside>
+
+      <div class="hub-main">
+        <header class="hub-topbar">
+          <div>
+            <p class="label">Website Interface</p>
+            <h2 id="hubWelcome">Welcome back.</h2>
+          </div>
+          <div class="account-pill" id="accountPill">User</div>
+        </header>
+
+        <section class="panel active" id="panel-dashboard">
+          <div class="panel-header">
+            <div><p class="label">Dashboard</p><h2 id="dashboardTitle">Workspace</h2></div>
+          </div>
+          <div class="stats-grid" id="adminStats">
+            <article><span>Open Tickets</span><strong id="openTicketCount">0</strong></article>
+            <article><span>Pending Ideas</span><strong id="pendingIdeaCount">0</strong></article>
+            <article><span>Commands</span><strong id="commandCount">0</strong></article>
+            <article><span>Users</span><strong id="userCount">0</strong></article>
+          </div>
+          <div class="hub-grid">
+            <article class="hub-card wide"><h3 id="dashboardCardTitle">Your Workspace</h3><p id="dashboardCardText">View the areas available for your account and continue working from the sidebar.</p></article>
+            <article class="hub-card"><h3>Quick Status</h3><p id="quickStatus">Your permissions decide which sections and actions are available.</p></article>
+            <article class="hub-card"><h3>Account</h3><p id="accountSummary">Signed in.</p></article>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-tickets">
+          <div class="panel-header">
+            <div><p class="label">Tickets</p><h2>Bug Reports & Support</h2></div>
+            <button class="button primary action-create-ticket" type="button" id="newTicketButton">New Ticket</button>
+          </div>
+          <form class="ticket-form collapsed" id="ticketForm">
+            <div class="form-row">
+              <select id="ticketType" required><option>Bug Report</option><option>Support</option><option>Question</option></select>
+              <select id="ticketPriority" required><option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option></select>
+            </div>
+            <input id="ticketTitle" type="text" placeholder="Ticket title" required />
+            <textarea id="ticketText" placeholder="Describe the request..." required></textarea>
+            <div class="card-actions"><button class="button primary" type="submit">Submit Ticket</button><button class="button secondary" type="button" data-cancel-form="ticketForm">Cancel</button></div>
+          </form>
+          <div class="tool-row manager-only"><input id="ticketSearch" type="search" placeholder="Search tickets..." /><select id="ticketFilter"><option value="all">All tickets</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select></div>
+          <div class="item-list" id="ticketList"></div>
+        </section>
+
+        <section class="panel" id="panel-ideas">
+          <div class="panel-header">
+            <div><p class="label">Ideas</p><h2>Feature Ideas</h2></div>
+            <button class="button primary action-create-idea" type="button" id="newIdeaButton">New Idea</button>
+          </div>
+          <form class="ticket-form collapsed" id="ideaForm">
+            <input id="ideaTitle" type="text" placeholder="Idea title" required />
+            <textarea id="ideaText" placeholder="Describe the idea..." required></textarea>
+            <div class="card-actions"><button class="button primary" type="submit">Submit Idea</button><button class="button secondary" type="button" data-cancel-form="ideaForm">Cancel</button></div>
+          </form>
+          <div class="tool-row manager-only"><input id="ideaSearch" type="search" placeholder="Search ideas..." /><select id="ideaFilter"><option value="all">All ideas</option><option>New</option><option>Planned</option><option>In Review</option><option>Done</option><option>Rejected</option></select></div>
+          <div class="item-list" id="ideaList"></div>
+        </section>
+
+        <section class="panel" id="panel-commands">
+          <div class="panel-header">
+            <div><p class="label">Commands</p><h2>Bot Commands</h2></div>
+            <button class="button primary manage-commands-only" type="button" id="newCommandButton">Add Command</button>
+          </div>
+          <form class="ticket-form collapsed" id="commandForm">
+            <input id="commandId" type="hidden" />
+            <div class="form-row"><input id="commandName" type="text" placeholder="Command name" required /><input id="commandCategory" type="text" placeholder="Category" required /><select id="commandStatus"><option>Active</option><option>Paused</option><option>Draft</option></select></div>
+            <textarea id="commandDescription" placeholder="Command description..." required></textarea>
+            <textarea id="commandUsage" placeholder="Usage example..." required></textarea>
+            <div class="card-actions"><button class="button primary" type="submit">Save Command</button><button class="button secondary" type="button" data-cancel-form="commandForm">Cancel</button></div>
+          </form>
+          <div class="tool-row"><input id="commandSearch" type="search" placeholder="Search commands..." /><select id="commandCategoryFilter"><option value="all">All categories</option></select></div>
+          <div class="item-list" id="commandList"></div>
+        </section>
+
+        <section class="panel" id="panel-code">
+          <div class="panel-header">
+            <div><p class="label">Code Tabs</p><h2>Code & Notes</h2></div>
+            <button class="button primary manage-code-only" type="button" id="newCodeButton">Add Tab</button>
+          </div>
+          <form class="ticket-form collapsed" id="codeForm">
+            <input id="codeId" type="hidden" />
+            <input id="codeTitle" type="text" placeholder="Tab name" required />
+            <textarea id="codeText" placeholder="Paste code or notes here..." required></textarea>
+            <div class="card-actions"><button class="button primary" type="submit">Save Tab</button><button class="button secondary" type="button" data-cancel-form="codeForm">Cancel</button></div>
+          </form>
+          <div class="item-list" id="codeList"></div>
+        </section>
+
+        <section class="panel" id="panel-users">
+          <div class="panel-header">
+            <div><p class="label">Administration</p><h2>User Management</h2></div>
+            <button class="button primary" type="button" id="showCreateUser">Open User Editor</button>
+          </div>
+
+          <form class="user-create-card" id="quickUserForm">
+            <div>
+              <p class="label">Create Account</p>
+              <h3>Add New User</h3>
+            </div>
+            <div class="quick-user-grid">
+              <input id="quickUsername" type="text" placeholder="Username" autocomplete="off" required />
+              <input id="quickEmail" type="email" placeholder="Email optional" autocomplete="off" />
+              <input id="quickPassword" type="text" placeholder="Password" autocomplete="off" required />
+              <select id="quickRole" required><option>User</option><option>Staff</option><option>Admin</option><option>Owner</option></select>
+              <select id="quickStatus" required><option>Active</option><option>Suspended</option></select>
+              <button class="button primary" type="submit">Create User</button>
+            </div>
+            <p class="form-note">The account is created immediately and can be edited below afterwards.</p>
+          </form>
+
+          <div class="tool-row users-tool-row"><input id="userSearch" type="search" placeholder="Search users..." /><select id="roleFilter"><option value="all">All roles</option><option>Owner</option><option>Admin</option><option>Staff</option><option>User</option></select><select id="statusFilter"><option value="all">All statuses</option><option>Active</option><option>Suspended</option></select></div>
+          <div class="item-list" id="userList"></div>
+        </section>
+
+        <section class="panel" id="panel-settings">
+          <div class="panel-header"><div><p class="label">Settings</p><h2>Workspace Settings</h2></div></div>
+          <div class="settings-grid">
+            <article class="hub-card wide"><h3>Access Rules</h3><p>Owners can manage every area. Admins can manage most content. Staff can handle tickets and ideas. Users can submit requests and view command information.</p></article>
+            <article class="hub-card wide danger-zone"><h3>Local Data</h3><p>This website stores its current workspace data in this browser.</p><button class="small-button danger" type="button" id="resetWorkspace">Reset Workspace Data</button></article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal" id="userModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-user-modal></div>
+    <section class="login-card wide-modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+      <button class="modal-close" type="button" data-close-user-modal aria-label="Close user editor">×</button>
+      <p class="label">Administration</p>
+      <h2 id="userModalTitle">Add User</h2>
+      <form class="user-form" id="userForm">
+        <input id="editUserId" type="hidden" />
+        <div class="form-row user-details-row">
+          <input id="editUsername" type="text" placeholder="Username" required />
+          <input id="editEmail" type="email" placeholder="Email optional" />
+          <input id="editPassword" type="text" placeholder="Password" required />
+          <select id="editRole" required><option>User</option><option>Staff</option><option>Admin</option><option>Owner</option></select>
+          <select id="editStatus" required><option>Active</option><option>Suspended</option></select>
+        </div>
+        <div class="permission-box">
+          <p>Permissions</p>
+          <label><input type="checkbox" name="editPermissions" value="dashboard" /> Dashboard</label>
+          <label><input type="checkbox" name="editPermissions" value="tickets.view" /> View Tickets</label>
+          <label><input type="checkbox" name="editPermissions" value="tickets.create" /> Create Tickets</label>
+          <label><input type="checkbox" name="editPermissions" value="tickets.manage" /> Manage Tickets</label>
+          <label><input type="checkbox" name="editPermissions" value="ideas.view" /> View Ideas</label>
+          <label><input type="checkbox" name="editPermissions" value="ideas.create" /> Create Ideas</label>
+          <label><input type="checkbox" name="editPermissions" value="ideas.manage" /> Manage Ideas</label>
+          <label><input type="checkbox" name="editPermissions" value="commands.view" /> View Commands</label>
+          <label><input type="checkbox" name="editPermissions" value="commands.manage" /> Manage Commands</label>
+          <label><input type="checkbox" name="editPermissions" value="code.view" /> View Code Tabs</label>
+          <label><input type="checkbox" name="editPermissions" value="code.manage" /> Manage Code Tabs</label>
+          <label><input type="checkbox" name="editPermissions" value="users.manage" /> Manage Users</label>
+          <label><input type="checkbox" name="editPermissions" value="settings.manage" /> Manage Settings</label>
+        </div>
+        <div class="card-actions"><button class="button primary" type="submit">Save User</button><button class="button secondary" type="button" data-close-user-modal>Cancel</button></div>
+      </form>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
