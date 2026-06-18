@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LM-Alessandro — private website hub for commands, tickets, ideas and access management." />
+  <link rel="icon" type="image/png" href="websiteicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <title>New Ticket · LM-Alessandro</title>
+</head>
+<body class="app-page" data-page="ticket-new">
+
+  <section class="hub open" id="hub">
+    <div class="hub-shell">
+      <aside class="hub-sidebar">
+        <a href="dashboard.html" class="brand hub-brand"><span class="brand-mark">LM</span><span class="brand-name">LM-Alessandro</span></a>
+        <nav class="hub-nav" aria-label="Hub navigation">
+          <a data-nav="dashboard" data-gate="dashboard" href="dashboard.html">Dashboard</a>
+          <a data-nav="tickets" data-gate="tickets" href="tickets.html">Tickets</a>
+          <a data-nav="ideas" data-gate="ideas" href="ideas.html">Ideas</a>
+          <a data-nav="commands" data-gate="commands" href="commands.html">Commands</a>
+          <a data-nav="code" data-gate="code" href="code.html">Code Tabs</a>
+          <a data-nav="users" data-gate="users" href="users.html">Users</a>
+          <a data-nav="settings" data-gate="settings" href="settings.html">Settings</a>
+        </nav>
+        <button class="button secondary logout-button" type="button" id="logoutButton">Log Out</button>
+      </aside>
+
+      <div class="hub-main">
+        <header class="hub-topbar">
+          <div>
+            <p class="label">Website Interface</p>
+            <h2 id="hubWelcome">Welcome back.</h2>
+          </div>
+          <div class="account-pill" id="accountPill">User</div>
+        </header>
+
+        <main class="page-content narrow-page" id="ticketNewPage">
+          <div class="panel-header">
+            <div><p class="label">Tickets</p><h2>New Ticket</h2></div>
+            <a class="button secondary" href="tickets.html">Back</a>
+          </div>
+          <form class="ticket-form" id="ticketForm">
+            <div class="form-row two-col">
+              <select id="ticketType" required><option>Bug Report</option><option>Support</option><option>Question</option></select>
+              <select id="ticketPriority" required><option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option></select>
+            </div>
+            <input id="ticketTitle" type="text" placeholder="Ticket title" required />
+            <textarea id="ticketText" placeholder="Describe the request..." required></textarea>
+            <div class="card-actions"><button class="button primary" type="submit">Submit Ticket</button><a class="button secondary" href="tickets.html">Cancel</a></div>
+            <p class="form-message" id="ticketMessage"></p>
+          </form>
+        </main>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

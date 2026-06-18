@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LM-Alessandro — private website hub for commands, tickets, ideas and access management." />
+  <link rel="icon" type="image/png" href="websiteicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Ideas · LM-Alessandro</title>
+</head>
+<body class="app-page" data-page="ideas">
+
+  <section class="hub open" id="hub">
+    <div class="hub-shell">
+      <aside class="hub-sidebar">
+        <a href="dashboard.html" class="brand hub-brand"><span class="brand-mark">LM</span><span class="brand-name">LM-Alessandro</span></a>
+        <nav class="hub-nav" aria-label="Hub navigation">
+          <a data-nav="dashboard" data-gate="dashboard" href="dashboard.html">Dashboard</a>
+          <a data-nav="tickets" data-gate="tickets" href="tickets.html">Tickets</a>
+          <a data-nav="ideas" data-gate="ideas" href="ideas.html">Ideas</a>
+          <a data-nav="commands" data-gate="commands" href="commands.html">Commands</a>
+          <a data-nav="code" data-gate="code" href="code.html">Code Tabs</a>
+          <a data-nav="users" data-gate="users" href="users.html">Users</a>
+          <a data-nav="settings" data-gate="settings" href="settings.html">Settings</a>
+        </nav>
+        <button class="button secondary logout-button" type="button" id="logoutButton">Log Out</button>
+      </aside>
+
+      <div class="hub-main">
+        <header class="hub-topbar">
+          <div>
+            <p class="label">Website Interface</p>
+            <h2 id="hubWelcome">Welcome back.</h2>
+          </div>
+          <div class="account-pill" id="accountPill">User</div>
+        </header>
+
+        <main class="page-content" id="ideasPage">
+          <div class="panel-header">
+            <div><p class="label">Ideas</p><h2>Feature Ideas</h2></div>
+            <a class="button primary action-create-idea" href="idea-new.html" id="newIdeaLink">New Idea</a>
+          </div>
+          <div class="tool-row" id="ideaTools"><input id="ideaSearch" type="search" placeholder="Search ideas..." /><select id="ideaFilter"><option value="all">All ideas</option><option>New</option><option>In Review</option><option>Planned</option><option>Done</option><option>Rejected</option></select></div>
+          <div class="item-list" id="ideaList"></div>
+        </main>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

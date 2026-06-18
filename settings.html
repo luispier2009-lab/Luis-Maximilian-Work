@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LM-Alessandro — private website hub for commands, tickets, ideas and access management." />
+  <link rel="icon" type="image/png" href="websiteicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Settings · LM-Alessandro</title>
+</head>
+<body class="app-page" data-page="settings">
+
+  <section class="hub open" id="hub">
+    <div class="hub-shell">
+      <aside class="hub-sidebar">
+        <a href="dashboard.html" class="brand hub-brand"><span class="brand-mark">LM</span><span class="brand-name">LM-Alessandro</span></a>
+        <nav class="hub-nav" aria-label="Hub navigation">
+          <a data-nav="dashboard" data-gate="dashboard" href="dashboard.html">Dashboard</a>
+          <a data-nav="tickets" data-gate="tickets" href="tickets.html">Tickets</a>
+          <a data-nav="ideas" data-gate="ideas" href="ideas.html">Ideas</a>
+          <a data-nav="commands" data-gate="commands" href="commands.html">Commands</a>
+          <a data-nav="code" data-gate="code" href="code.html">Code Tabs</a>
+          <a data-nav="users" data-gate="users" href="users.html">Users</a>
+          <a data-nav="settings" data-gate="settings" href="settings.html">Settings</a>
+        </nav>
+        <button class="button secondary logout-button" type="button" id="logoutButton">Log Out</button>
+      </aside>
+
+      <div class="hub-main">
+        <header class="hub-topbar">
+          <div>
+            <p class="label">Website Interface</p>
+            <h2 id="hubWelcome">Welcome back.</h2>
+          </div>
+          <div class="account-pill" id="accountPill">User</div>
+        </header>
+
+        <main class="page-content" id="settingsPage">
+          <div class="panel-header"><div><p class="label">Settings</p><h2>Workspace Settings</h2></div></div>
+          <div class="settings-grid">
+            <article class="hub-card wide"><h3>Access Rules</h3><p>Owners can manage every area. Admins can manage most content. Staff can handle tickets and ideas. Users can submit requests and view command information.</p></article>
+            <article class="hub-card wide"><h3>How data is saved</h3><p>This static website stores its workspace data in this browser using localStorage. Test it on GitHub Pages or with a local server, not by opening every file separately.</p></article>
+            <article class="hub-card wide danger-zone"><h3>Local Data</h3><p>This resets the local browser workspace data and restores the default owner account.</p><button class="small-button danger" type="button" id="resetWorkspace">Reset Workspace Data</button></article>
+          </div>
+        </main>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
